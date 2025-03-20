@@ -69,4 +69,3 @@ This dataset was built from **arXiv metadata** containing information on over **
 ---
 
 This document will be updated as more details become available.
-
