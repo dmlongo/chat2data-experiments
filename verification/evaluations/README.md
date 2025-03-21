@@ -62,9 +62,9 @@ To establish a baseline and assess our workflow's efficacy, we applied standard 
 
 | Model                                      | Accuracy | Precision | Recall | Specificity | F1   |
 |--------------------------------------------|----------|-----------|--------|-------------|------|
-| OpenAI embedding + Naive Bayes Classifier  | 0.63     | 0.59      | 0.73   | 0.54        | 0.65 | 
- | OpenAI embeddings + Logistic Regression    | 0.64     | 0.6       | 0.74   | 0.55        | 0.66 |
-| OpenAI embeddings + Multi-Layer Perceptron | 0.55     | 0.53      | 0.58   | 0.52        | 0.55 |
+| OpenAI embedding + Logistic Regression  | 0.63     | 0.59      | 0.73   | 0.54        | 0.65 | 
+ | OpenAI embeddings +  Naive Bayes Classifier   | 0.66     | 0.61      | 0.80   | 0.53        | 0.69 |
+| OpenAI embeddings + Multi-Layer Perceptron | 0.57     | 0.55      | 0.67   | 0.49        | 0.60 |
 | Zeroshot gpt-4o                            | 0.76     | 0.8       | 0.69   | 0.83        | 0.74 |
 | Zeroshot o1                                | 0.76     | 0.83      | 0.65   | 0.87        | 0.73 |
 | Chat2Rel (using gpt-4o)                 | 0.79     | 0.73      | 0.92   | 0.66        | 0.81 |
