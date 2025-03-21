@@ -1,107 +1,101 @@
-# Chat2Data: Experiments & Evaluations
+# Supplementary Material for Chat2Data Paper
 
-This repository contains experiments, baselines, and evaluations for **Chat2Data**, focusing on **data verification** and **data enrichment** tasks across multiple datasets. It includes both the experiments from our paper and additional ones that could not be included due to space constraints.
-
-We provide code for:
-- Running **baseline classifiers** (e.g., Logistic Regression, GaussianNB, MLP)
-- Evaluating **GPT-based baselines**
-- Performing enrichment and verification workflows
-
-> 📌 **Note:** Some datasets are proprietary or too large to include directly in the repository. See [data/README.md](data/README.md) for details and instructions.
+This repository contains additional experiments and evaluations referenced in our paper. It includes datasets (where possible), full result tables, and discussions that further support the claims made in the main manuscript.
 
 ---
 
-## 🔍 Tasks Overview
+## 📌 Datasets Overview
 
-### **1. Data Verification**
-- Goal: Identify whether a semantic relationship (e.g., competitor, substitution) between two entities is valid.
-- Models: Traditional classifiers and GPT-based approaches.
-- Datasets: Industrial and cross-domain.
+We evaluate our methods on two types of datasets:
 
-### **2. Data Enrichment**
-- Goal: Generate or suggest new candidate entities for semantic relationships.
-- Models: Primarily GPT-based.
-- Datasets: Only industrial.
+- **Industrial Datasets**
+  - **Competitor Relationship Dataset**  
+    🔒 *Private dataset. Not included in the repo due to confidentiality.*
+  - **Product Substitution Dataset**  
+    📂 Available at: [data/products_substitution.csv](data/products_substitution.csv)
 
----
+- **Cross-Domain Datasets**  
+  📂 Included in this repository:
+  - [Disease Ontology](data/disease_ontology.csv)
+  - [Drug-to-Drug Interactions](data/drug_interactions.csv)
+  - [ArXiv Research Areas](data/arxiv_research_areas.csv)
 
-## 📁 Repository Structure
-
-```
-.
-├── data/
-├── enrichment/
-├── verification/
-```
-
-- **`data/`**  
-  Contains datasets (when possible), links to external or private datasets, and metadata. See `data/README.md` for full details.
-
-- **`verification/`**  
-  Code and notebooks for data verification experiments, including traditional classifiers and GPT-based evaluations.
-
-- **`enrichment/`**  
-  Scripts and resources related to data enrichment experiments, primarily using generative models.
+For dataset details and access information, see [data/README.md](data/README.md).
 
 ---
 
-## 📊 Datasets
+## 📊 Additional Experimental Results
 
-The following datasets are used across tasks:
+We provide summary tables for the main evaluation benchmarks below. For detailed analysis and full discussion of these results, please see the complete discussion in [verification/evaluations/README.md](verification/evaluations/README.md).
 
-- **Industrial Datasets:**
-  - Competitor Relationship *(private)*
-  - Product Substitution *(included as `products_substitution.csv`)*
+### Disease Ontology Dataset
 
-- **Cross-Domain Datasets:**
-  - Disease Ontology
-  - Drug-to-Drug Interactions
-  - ArXiv Research Areas
+| Model                                     | Accuracy | Precision | Recall | Specificity | F1   |
+| ----------------------------------------- | -------- | --------- | ------ | ----------- | ---- |
+| OpenAI embedding + Naive Bayes Classifier | 0.69     | 0.68      | 0.73   | 0.66        | 0.71 |
+| OpenAI embedding + Logistic Regression    | 0.68     | 0.67      | 0.72   | 0.65        | 0.70 |
+| OpenAI embedding + Multi-Layer Perceptron | 0.68     | 0.68      | 0.69   | 0.67        | 0.68 |
+| Zeroshot GPT-4o                           | 0.83     | 0.74      | 0.88   | 0.79        | 0.80 |
+| Zeroshot o1                               | 0.83     | 0.70      | 0.96   | 0.76        | 0.81 |
+| Chat2Rel (using GPT-4o)                   | 0.95     | 1.00      | 0.90   | 1.00        | 0.95 |
 
-👉 See [data/README.md](data/README.md) for descriptions, access information, and citations.
-
----
-
-## 🧪 Running the Experiments
-
-### Prerequisites
-Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-### Baseline Classifiers
-Classifier baselines for each dataset are provided as Jupyter notebooks inside `verification/baselines/`.
-
-Example:
-```bash
-jupyter notebook verification/baselines/products_substitution_classifiers.ipynb
-```
-
-### GPT Baselines
-Evaluation scripts and instructions for GPT-based baselines are in:
-```
-verification/evaluations/
-```
-
-### Data Enrichment
-Enrichment-specific scripts are located under:
-```
-enrichment/
-```
+**Discussion:**  
+Traditional classifiers based on similarity embeddings underperform compared to LLMs. Negative pairs in this dataset often include reversed or sibling relationships, which LLMs like GPT-4o and o1 can distinguish more effectively. Chat2Rel further improves F1 score by introducing chain-of-thought reasoning, enhancing hierarchical understanding.
 
 ---
 
-## 📎 License
+### Drug-to-Drug Interactions Dataset
 
-This code is distributed for research purposes. License terms coming soon.
+| Model                      | Accuracy | Precision | Recall | Specificity | F1   |
+| -------------------------- | -------- | --------- | ------ | ----------- | ---- |
+| GCN (no node features)     | 0.68     | 0.89      | 0.41   | 0.95        | 0.56 |
+| GCN + Molecular Embeddings | 0.71     | 0.88      | 0.51   | 0.93        | 0.64 |
+| Zeroshot GPT-4o            | 0.46     | 0.47      | 0.67   | 0.25        | 0.55 |
+| Zeroshot o1                | 0.76     | 0.82      | 0.67   | 0.85        | 0.74 |
+| Chat2Rel (using GPT-4o)    | 0.69     | 0.70      | 0.66   | 0.72        | 0.68 |
+
+**Discussion:**  
+This is a challenging factual task. GCNs model chemical structures well, while LLMs like o1 incorporate semantic understanding of drug properties and interactions. Chat2Rel improves GPT-4o’s baseline by guiding its reasoning through few-shot examples, though o1 still outperforms it in this domain.
 
 ---
 
-## ✏️ Citation
+### ArXiv Research Areas Dataset
 
-If you use this codebase, please cite the original paper (to be added upon publication).
+| Model                                     | Accuracy | Precision | Recall | Specificity | F1   |
+| ----------------------------------------- | -------- | --------- | ------ | ----------- | ---- |
+| OpenAI embedding + Naive Bayes Classifier | 0.63     | 0.59      | 0.73   | 0.54        | 0.65 |
+| OpenAI embedding + Logistic Regression    | 0.64     | 0.60      | 0.74   | 0.55        | 0.66 |
+| OpenAI embedding + Multi-Layer Perceptron | 0.55     | 0.53      | 0.58   | 0.52        | 0.55 |
+| Zeroshot GPT-4o                           | 0.76     | 0.80      | 0.69   | 0.83        | 0.74 |
+| Zeroshot o1                               | 0.76     | 0.83      | 0.65   | 0.87        | 0.73 |
+| Chat2Rel (using GPT-4o)                   | 0.79     | 0.73      | 0.92   | 0.66        | 0.81 |
+
+**Discussion:**  
+While standard classifiers show balanced but limited performance, LLM-based models (GPT-4o, o1) and Chat2Rel significantly boost recall and F1. Chat2Rel’s higher recall indicates strong sensitivity in identifying topical similarity, while its lower specificity suggests occasional overprediction. Overall, Chat2Rel enhances relationship detection across subtle distinctions in research areas.
 
 ---
 
-For questions or collaboration inquiries, feel free to reach out!
+## 🔗 Links to Source Code
+
+To reproduce or explore the experiments:
+
+- **Verification**
+  - 📄 [Classifier baselines (e.g., Naive Bayes, Logistic Regression)](verification/baselines/)
+  - 📄 [GPT-based baselines](verification/baselines/)
+
+- **Enrichment**
+  - 📄 [Enrichment experiment scripts](enrichment/)
+
+For dataset descriptions and access, see [data/README.md](data/README.md).
+
+---
+
+This document will be updated as more results become available or experiments are extended.
+
+---
+
+## 🗂️ Project Overview (for Developers)
+
+Looking for repository structure, how to run the code, or implementation details?
+
+👉 See [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
